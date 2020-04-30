@@ -8,7 +8,23 @@ import 'moment/locale/pt-br'
 import commonStyles from '../commonStyles'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import Task from '../components/Task'
+import { FlatList } from 'react-native-gesture-handler'
 export default class TaskList extends Component {
+    state = {
+        tasks: [
+            {
+                id: Math.random(),
+                desc: 'Comprar Livro',
+                estimatedAt: new Date(),
+                doneAt: new Date(),
+            },
+            {
+                id: Math.random(),
+                desc: 'Ler Livro',
+                estimatedAt: new Date(),
+            },
+        ]
+    }
     render() {
         const today = moment().local('pt-br').format('dddd, D [de] MMMM')
         return <View style={styles.container}>
@@ -19,8 +35,11 @@ export default class TaskList extends Component {
                 </View>
             </ImageBackground>
             <View style={styles.taskList}>
-                <Task desc="Comprar Livro" estimatedAt={new Date()} doneAt={new Date()}></Task>
-                <Task desc="Ler Livro" estimatedAt={new Date()}></Task>
+                <FlatList
+                    data={this.state.tasks}
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={({ item }) => <Task {...item} />}
+                />
             </View>
         </View>
     }
